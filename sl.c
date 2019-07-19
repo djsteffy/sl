@@ -45,16 +45,19 @@
 
 void add_smoke(int y, int x);
 void add_man(int y, int x);
+void add_jack(int y, int x, bool excited);
 int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
 void option(char *str);
 int my_mvaddstr(int y, int x, char *str);
 
-int ACCIDENT  = 0;
-int LOGO      = 0;
-int FLY       = 0;
-int C51       = 0;
+int ACCIDENT    = 0;
+int LOGO        = 0;
+int FLY         = 0;
+int C51         = 0;
+int JACK        = 0;
+int EXCITEDJACK = 0;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -67,14 +70,16 @@ int my_mvaddstr(int y, int x, char *str)
 
 void option(char *str)
 {
-    extern int ACCIDENT, LOGO, FLY, C51;
+    extern int ACCIDENT, LOGO, FLY, C51, JACK, EXCITEDJACK;
 
     while (*str != '\0') {
         switch (*str++) {
-            case 'a': ACCIDENT = 1; break;
-            case 'F': FLY      = 1; break;
-            case 'l': LOGO     = 1; break;
-            case 'c': C51      = 1; break;
+            case 'a': ACCIDENT    = 1; break;
+            case 'F': FLY         = 1; break;
+            case 'l': LOGO        = 1; break;
+            case 'c': C51         = 1; break;
+            case 'j': JACK        = 1; break;
+            case 'e': EXCITEDJACK = 1; break;
             default:                break;
         }
     }
@@ -109,7 +114,7 @@ int main(int argc, char *argv[])
         }
         getch();
         refresh();
-        usleep(40000);
+        usleep(30000);
     }
     mvcur(0, COLS - 1, LINES - 1, 0);
     endwin();
@@ -191,6 +196,12 @@ int add_D51(int x)
         my_mvaddstr(y + i, x, d51[(D51LENGTH + x) % D51PATTERNS][i]);
         my_mvaddstr(y + i + dy, x + 53, coal[i]);
     }
+    if (JACK == 1) {
+        add_jack(y, x + 66, false);
+    }
+    if (EXCITEDJACK == 1) {
+        add_jack(y, x + 66, true);
+    }
     if (ACCIDENT == 1) {
         add_man(y + 2, x + 43);
         add_man(y + 2, x + 47);
@@ -239,6 +250,24 @@ int add_C51(int x)
     return OK;
 }
 
+void add_jack(int y, int x, bool excited)
+{
+    static char *jack[3]
+        = {JACK01, JACK02, JACK03};
+    static char *ejack[3]
+        = {EJACK01, EJACK02, EJACK03};
+    int i;
+    for (i = 0; i < 3; ++i) {
+        if (excited)
+        {
+            my_mvaddstr(y + i, x, ejack[i]);
+        }
+        else 
+        {
+            my_mvaddstr(y + i, x, jack[i]);
+        }
+    }
+}
 
 void add_man(int y, int x)
 {

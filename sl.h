@@ -60,6 +60,14 @@
 
 #define COALDEL "                              "
 
+#define EJACK01 " \\o/"
+#define EJACK02 "  |  "
+#define EJACK03 " / \\"
+
+#define JACK01 " o  "
+#define JACK02 "/|\\"
+#define JACK03 "/ \\"
+
 #define LOGOHEIGHT    	 6
 #define LOGOFUNNEL  	 4
 #define LOGOLENGTH      84
