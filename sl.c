@@ -46,6 +46,7 @@
 void add_smoke(int y, int x);
 void add_man(int y, int x);
 void add_jack(int y, int x, bool excited);
+void add_banana(int y, int x);
 int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
@@ -58,6 +59,7 @@ int FLY         = 0;
 int C51         = 0;
 int JACK        = 0;
 int EXCITEDJACK = 0;
+int BANANA      = 0;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -80,6 +82,7 @@ void option(char *str)
             case 'c': C51         = 1; break;
             case 'j': JACK        = 1; break;
             case 'e': EXCITEDJACK = 1; break;
+            case 'b': BANANA      = 1; break;
             default:                break;
         }
     }
@@ -202,6 +205,10 @@ int add_D51(int x)
     if (EXCITEDJACK == 1) {
         add_jack(y, x + 66, true);
     }
+    if (BANANA == 1) {
+        add_banana(y + 4, x + 58);
+        add_banana(y + 4, x + 69);
+    }
     if (ACCIDENT == 1) {
         add_man(y + 2, x + 43);
         add_man(y + 2, x + 47);
@@ -266,6 +273,16 @@ void add_jack(int y, int x, bool excited)
         {
             my_mvaddstr(y + i, x, jack[i]);
         }
+    }
+}
+
+void add_banana(int y, int x)
+{
+    static char *banana[4]
+        = {BANANA1, BANANA2, BANANA3, BANANA4};
+    int i;
+    for (i = 0; i < 4; ++i) {
+        my_mvaddstr(y + i, x, banana[i]);
     }
 }
 

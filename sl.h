@@ -67,6 +67,11 @@
 #define JACK01 " o  "
 #define JACK02 "/|\\"
 #define JACK03 "/ \\"
+ 
+#define BANANA1     "  _ \'-_,#"
+#define BANANA2     "_\'--','`|"
+#define BANANA3     "\'---`  /"
+#define BANANA4     "`----'`"
 
 #define LOGOHEIGHT    	 6
 #define LOGOFUNNEL  	 4
