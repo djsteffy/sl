@@ -12,13 +12,13 @@
 #define D51LENGTH	83
 #define D51PATTERNS	 6
 
-#define J1 "        /'7"
-#define J2 "       /_<| ._"
-#define J3 "  __,//   \/ 7"
-#define J4 " <:_         ="
-#define J5 "    `\\ _ /\ \\"
-#define J6 "       \ <| '´"
-#define J7 "        \.7"
+#define J1 "        /'7 "
+#define J2 "       /_<| . "
+#define J3 "  __,//   \\/ 7 "
+#define J4 " <:_         = "
+#define J5 "    `\\ _  /\\ \\ "
+#define J6 "       \\ <| . "
+#define J7 "        \\.7 "
 
 
 

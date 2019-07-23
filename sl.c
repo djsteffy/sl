@@ -50,6 +50,7 @@ void add_smoke(int y, int x);
 void add_man(int y, int x);
 void add_jack(int y, int x, bool excited);
 void add_banana(int y, int x);
+void add_plane(int y, int x);
 int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
@@ -64,6 +65,7 @@ int JACK        = 0;
 int EXCITEDJACK = 0;
 int BANANA      = 0;
 int WAGONS      = 0;
+int PLANES      = 0;
 
 int wagonCount  = 1;
 
@@ -78,8 +80,8 @@ int my_mvaddstr(int y, int x, char *str)
 
 int main(int argc, char *argv[])
 {
-    int x, i, opt;
-    while((opt = getopt(argc, argv, "aFlcjebw:")) != -1)  
+    int x, opt, tmp;
+    while((opt = getopt(argc, argv, "aFlcjebpw:")) != -1)  
     {  
         switch(opt)  
         {  
@@ -104,9 +106,12 @@ int main(int argc, char *argv[])
             case 'b':
                 BANANA = 1;
                 break;
+            case 'p':
+                PLANES = 1;
+                break;
             case 'w':
                 WAGONS = 1; 
-                wagonCount = *optarg;
+                wagonCount = atoi(optarg);
                 break;
             case ':':  
                 printf("option needs a value\n");  
@@ -130,7 +135,7 @@ int main(int argc, char *argv[])
     leaveok(stdscr, TRUE);
     scrollok(stdscr, FALSE);
 
-    for (x = COLS - 1; ; --x) {
+    for (x = COLS-1; ; --x) {
         if (LOGO == 1) {
             if (add_sl(x) == ERR) break;
         }
@@ -213,7 +218,7 @@ int add_D51(int x)
 
     int y, i, j, dy = 0;
 
-    if (x < - D51LENGTH)  return ERR;
+    if (x < -(D51LENGTH+wagonCount*29))  return ERR;
     y = LINES / 2 - 5;
 
     if (FLY == 1) {
@@ -221,9 +226,9 @@ int add_D51(int x)
         dy = 1;
     }
     for (i = 0; i <= D51HEIGHT; ++i) {
-        my_mvaddstr(y + i, x, d51[(D51LENGTH + x) % D51PATTERNS][i]);
-        for (j = 0; j < wagonCount; ++j) {
-            my_mvaddstr(y + i + dy, x + 53 + j*29, coal[i]);
+        my_mvaddstr(y + i, x, d51[(D51LENGTH+wagonCount*29 + x) % D51PATTERNS][i]);
+        for (j = 0; j < wagonCount; j++) {
+                my_mvaddstr(y + i + dy, x + 53 + j*29, coal[i]);
         }
     }
     if (JACK == 1) {
@@ -239,6 +244,12 @@ int add_D51(int x)
     if (ACCIDENT == 1) {
         add_man(y + 2, x + 43);
         add_man(y + 2, x + 47);
+    }
+    if (PLANES == 1) {
+        add_plane(y - 10, x + 93);
+        add_plane(y - 10, x + 113);
+        add_plane(y - 10, x + 133);
+
     }
     add_smoke(y - 1, x + D51FUNNEL);
     return OK;
@@ -300,6 +311,16 @@ void add_jack(int y, int x, bool excited)
         {
             my_mvaddstr(y + i, x, jack[i]);
         }
+    }
+}
+
+void add_plane(int y, int x)
+{
+    static char *j[7]
+        = {J1, J2, J3, J4, J5, J6, J7};
+    int i;
+    for (i = 0; i < 7; ++i) {
+        my_mvaddstr(y + i, x, j[i]);
     }
 }
 
