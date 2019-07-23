@@ -41,6 +41,9 @@
 #include <curses.h>
 #include <signal.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdio.h>
 #include "sl.h"
 
 void add_smoke(int y, int x);
@@ -60,6 +63,9 @@ int C51         = 0;
 int JACK        = 0;
 int EXCITEDJACK = 0;
 int BANANA      = 0;
+int WAGONS      = 0;
+
+int wagonCount  = 1;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -70,33 +76,52 @@ int my_mvaddstr(int y, int x, char *str)
     return OK;
 }
 
-void option(char *str)
-{
-    extern int ACCIDENT, LOGO, FLY, C51, JACK, EXCITEDJACK;
-
-    while (*str != '\0') {
-        switch (*str++) {
-            case 'a': ACCIDENT    = 1; break;
-            case 'F': FLY         = 1; break;
-            case 'l': LOGO        = 1; break;
-            case 'c': C51         = 1; break;
-            case 'j': JACK        = 1; break;
-            case 'e': EXCITEDJACK = 1; break;
-            case 'b': BANANA      = 1; break;
-            default:                break;
-        }
-    }
-}
-
 int main(int argc, char *argv[])
 {
-    int x, i;
-
-    for (i = 1; i < argc; ++i) {
-        if (*argv[i] == '-') {
-            option(argv[i] + 1);
-        }
+    int x, i, opt;
+    while((opt = getopt(argc, argv, "aFlcjebw:")) != -1)  
+    {  
+        switch(opt)  
+        {  
+            case 'a':
+                ACCIDENT = 1;
+                break;
+            case 'F':
+                FLY = 1;
+                break;
+            case 'l':
+                LOGO = 1;
+                break;
+            case 'c':
+                C51 = 1;
+                break;
+            case 'j':
+                JACK = 1;
+                break;
+            case 'e':
+                EXCITEDJACK = 1;
+                break;
+            case 'b':
+                BANANA = 1;
+                break;
+            case 'w':
+                WAGONS = 1; 
+                wagonCount = *optarg;
+                break;
+            case ':':  
+                printf("option needs a value\n");  
+                break;  
+            case '?':
+                printf("unknown option: %c\n", optopt); 
+                break;  
+        }  
+    }  
+    
+    int index;
+    for(index = optind; index < argc; index++){      
+        printf ("Non-option argument %s\n", argv[index]);
     }
+
     initscr();
     signal(SIGINT, SIG_IGN);
     noecho();
@@ -186,7 +211,7 @@ int add_D51(int x)
         = {COAL01, COAL02, COAL03, COAL04, COAL05,
            COAL06, COAL07, COAL08, COAL09, COAL10, COALDEL};
 
-    int y, i, dy = 0;
+    int y, i, j, dy = 0;
 
     if (x < - D51LENGTH)  return ERR;
     y = LINES / 2 - 5;
@@ -197,7 +222,9 @@ int add_D51(int x)
     }
     for (i = 0; i <= D51HEIGHT; ++i) {
         my_mvaddstr(y + i, x, d51[(D51LENGTH + x) % D51PATTERNS][i]);
-        my_mvaddstr(y + i + dy, x + 53, coal[i]);
+        for (j = 0; j < wagonCount; ++j) {
+            my_mvaddstr(y + i + dy, x + 53 + j*29, coal[i]);
+        }
     }
     if (JACK == 1) {
         add_jack(y, x + 66, false);
