@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
                 break;  
         }  
     }  
-    
+
     int index;
     for(index = optind; index < argc; index++){      
         printf ("Non-option argument %s\n", argv[index]);
@@ -307,9 +307,11 @@ void add_banana(int y, int x)
 {
     static char *banana[4]
         = {BANANA1, BANANA2, BANANA3, BANANA4};
-    int i;
-    for (i = 0; i < 4; ++i) {
-        my_mvaddstr(y + i, x, banana[i]);
+    int h, i;
+    for (h = 0; h < wagonCount; ++h) {
+        for (i = 0; i < 4; ++i) {
+            my_mvaddstr(y + i, x+h*29, banana[i]);
+        }
     }
 }
 
