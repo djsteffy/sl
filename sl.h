@@ -20,6 +20,10 @@
 #define J6 "       \\ <| . "
 #define J7 "        \\.7 "
 
+#define MANGO1 " ,;:. "
+#define MANGO2 "(::;;) "
+#define MANGO3 " `;:' "
+
 
 
 #define D51STR1  "      ====        ________                ___________ "

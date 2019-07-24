@@ -50,6 +50,7 @@ void add_smoke(int y, int x);
 void add_man(int y, int x);
 void add_jack(int y, int x, bool excited);
 void add_banana(int y, int x);
+void add_mango(int y, int x);
 void add_plane(int y, int x);
 int add_C51(int x);
 int add_D51(int x);
@@ -64,6 +65,7 @@ int C51         = 0;
 int JACK        = 0;
 int EXCITEDJACK = 0;
 int BANANA      = 0;
+int MANGO       = 0;
 int WAGONS      = 0;
 int PLANES      = 0;
 
@@ -81,7 +83,7 @@ int my_mvaddstr(int y, int x, char *str)
 int main(int argc, char *argv[])
 {
     int x, opt, tmp;
-    while((opt = getopt(argc, argv, "aFlcjebpw:")) != -1)  
+    while((opt = getopt(argc, argv, "aFlcjebpmw:")) != -1)  
     {  
         switch(opt)  
         {  
@@ -108,6 +110,9 @@ int main(int argc, char *argv[])
                 break;
             case 'p':
                 PLANES = 1;
+                break;
+            case 'm':
+                MANGO = 1;
                 break;
             case 'w':
                 WAGONS = 1; 
@@ -241,6 +246,11 @@ int add_D51(int x)
         add_banana(y + 4, x + 58);
         add_banana(y + 4, x + 69);
     }
+    if (MANGO == 1) {
+        add_mango(y + 4, x + 57);
+        add_mango(y + 4, x + 65);
+        add_mango(y + 4, x + 73);
+    }
     if (ACCIDENT == 1) {
         add_man(y + 2, x + 43);
         add_man(y + 2, x + 47);
@@ -332,6 +342,18 @@ void add_banana(int y, int x)
     for (h = 0; h < wagonCount; ++h) {
         for (i = 0; i < 4; ++i) {
             my_mvaddstr(y + i, x+h*29, banana[i]);
+        }
+    }
+}
+
+void add_mango(int y, int x)
+{
+    static char *mango[3]
+        = {MANGO1, MANGO2, MANGO3};
+    int h, i;
+    for (h = 0; h < wagonCount; ++h) {
+        for (i = 0; i < 3; ++i) {
+            my_mvaddstr(y + i, x+h*29, mango[i]);
         }
     }
 }
