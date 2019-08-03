@@ -52,6 +52,7 @@ void add_jack(int y, int x, bool excited);
 void add_banana(int y, int x);
 void add_mango(int y, int x);
 void add_plane(int y, int x);
+int add_squadron(int x);
 int add_C51(int x);
 int add_D51(int x);
 int add_sl(int x);
@@ -68,6 +69,7 @@ int BANANA      = 0;
 int MANGO       = 0;
 int WAGONS      = 0;
 int PLANES      = 0;
+int SQUADRON    = 0;
 
 int wagonCount  = 1;
 
@@ -83,7 +85,7 @@ int my_mvaddstr(int y, int x, char *str)
 int main(int argc, char *argv[])
 {
     int x, opt, tmp;
-    while((opt = getopt(argc, argv, "aFlcjebpmw:")) != -1)  
+    while((opt = getopt(argc, argv, "aFlcjesbpmw:")) != -1)  
     {  
         switch(opt)  
         {  
@@ -114,11 +116,14 @@ int main(int argc, char *argv[])
             case 'm':
                 MANGO = 1;
                 break;
+            case 's':
+                SQUADRON = 1;
+                break;
             case 'w':
                 WAGONS = 1; 
                 wagonCount = atoi(optarg);
                 break;
-            case ':':  
+            case ':':
                 printf("option needs a value\n");  
                 break;  
             case '?':
@@ -146,6 +151,9 @@ int main(int argc, char *argv[])
         }
         else if (C51 == 1) {
             if (add_C51(x) == ERR) break;
+        }
+        else if (SQUADRON == 1) {
+            if (add_squadron(x) == ERR) break;
         }
         else {
             if (add_D51(x) == ERR) break;
@@ -332,6 +340,24 @@ void add_plane(int y, int x)
     for (i = 0; i < 7; ++i) {
         my_mvaddstr(y + i, x, j[i]);
     }
+}
+
+int add_squadron(int x)
+{
+    if (x < -LOGOLENGTH)  return ERR;
+    int y;
+    y = LINES / 2 - 5;
+    static char *j[7]
+        = {J1, J2, J3, J4, J5, J6, J7};
+    int i;
+    for (i = 0; i < 7; ++i) {
+        my_mvaddstr(y + i, x, j[i]);
+        my_mvaddstr(y + i + 7, x + 10, j[i]);
+        my_mvaddstr(y + i - 7, x + 10, j[i]);
+        my_mvaddstr(y + i + 14, x + 20, j[i]);
+        my_mvaddstr(y + i - 14, x + 20, j[i]);
+    }
+    return OK;
 }
 
 void add_banana(int y, int x)
