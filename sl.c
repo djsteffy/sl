@@ -47,6 +47,7 @@
 #include "sl.h"
 
 void add_smoke(int y, int x);
+void add_stream(int y, int x);
 void add_man(int y, int x);
 void add_jack(int y, int x, bool excited);
 void add_banana(int y, int x);
@@ -357,6 +358,12 @@ int add_squadron(int x)
         my_mvaddstr(y + i + 14, x + 20, j[i]);
         my_mvaddstr(y + i - 14, x + 20, j[i]);
     }
+        add_stream(y+3, x + 14);
+        add_stream(y+10, x + 24);
+        add_stream(y-4, x + 24);
+        add_stream(y+17, x + 34);
+        add_stream(y-11, x + 34);
+
     return OK;
 }
 
@@ -429,6 +436,49 @@ void add_smoke(int y, int x)
             S[i].y    -= dy[S[i].ptrn];
             S[i].x    += dx[S[i].ptrn];
             S[i].ptrn += (S[i].ptrn < SMOKEPTNS - 1) ? 1 : 0;
+            my_mvaddstr(S[i].y, S[i].x, Smoke[S[i].kind][S[i].ptrn]);
+        }
+        my_mvaddstr(y, x, Smoke[sum % 2][0]);
+        S[sum].y = y;    S[sum].x = x;
+        S[sum].ptrn = 0; S[sum].kind = sum % 2;
+        sum ++;
+    }
+}
+
+void add_stream(int y, int x)
+#define STREAMPTNS        12
+{
+    static struct smokes {
+        int y, x;
+        int ptrn, kind;
+    } S[1000];
+    static int sum = 0;
+    static char *Smoke[2][STREAMPTNS]
+        = {{"(  )",
+            "(  )" , "( )"   , "( )"   , "()"   , "()"  ,
+            "O"    , "O"     , "O"     , "O"    , "O"   ,
+            " "                                          },
+           {"(@@)",
+            "(@@)" , "(@)"   , "(@)"   , "@@"   , "@@"  ,
+            "@"    , "@"     , "@"     , "@"    , "@"   ,
+            " "                                          }};
+    static char *Eraser[STREAMPTNS]
+        =  { "    ",
+            "    " , "   "   , "   "   , "  "   , "  "  ,
+            " "    , " "     , " "     , " "    , " "   ,
+            " "                                          };
+    static int dy[STREAMPTNS] = {  0, 0, 0, 0, 0, 0,
+                                 0,  0, 0, 0, 0, 0             };
+    static int dx[STREAMPTNS] = { 1, 1, 1, 1, 2, 2,
+                                 2,  2, 2, 3, 3, 3             };
+    int i;
+
+    if (x % 4 == 0) {
+        for (i = 0; i < sum; ++i) {
+            my_mvaddstr(S[i].y, S[i].x, Eraser[S[i].ptrn]);
+            S[i].y    -= dy[S[i].ptrn];
+            S[i].x    += dx[S[i].ptrn];
+            S[i].ptrn += (S[i].ptrn < STREAMPTNS - 1) ? 1 : 0;
             my_mvaddstr(S[i].y, S[i].x, Smoke[S[i].kind][S[i].ptrn]);
         }
         my_mvaddstr(y, x, Smoke[sum % 2][0]);
