@@ -24,6 +24,9 @@
 #define MANGO2 "(::;;) "
 #define MANGO3 " `;:' "
 
+#define WRANGLER1 " /l ,[____], "
+#define WRANGLER2 "l---L -O||||||O- "
+#define WRANGLER3 "()_)-()_)-o-)_) "
 
 
 #define D51STR1  "      ====        ________                ___________ "
