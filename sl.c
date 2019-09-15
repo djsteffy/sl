@@ -352,17 +352,16 @@ int add_squadron(int x)
         = {J1, J2, J3, J4, J5, J6, J7};
     int i;
     for (i = 0; i < 7; ++i) {
-        my_mvaddstr(y + i, x, j[i]);
-        my_mvaddstr(y + i + 7, x + 10, j[i]);
-        my_mvaddstr(y + i - 7, x + 10, j[i]);
-        my_mvaddstr(y + i + 14, x + 20, j[i]);
-        my_mvaddstr(y + i - 14, x + 20, j[i]);
+        my_mvaddstr(y + i, x + 10, j[i]);
+        my_mvaddstr(y + i - 7, x, j[i]);
+        my_mvaddstr(y + i + 7, x + 20, j[i]);
+        my_mvaddstr(y + i - 14, x + 10, j[i]);
     }
-        add_stream(y+3, x + 14);
-        add_stream(y+10, x + 24);
-        add_stream(y-4, x + 24);
-        add_stream(y+17, x + 34);
-        add_stream(y-11, x + 34);
+    
+    add_stream(y-4, x + 14);
+    add_stream(y+3, x + 24);
+    add_stream(y-11, x + 24);
+    add_stream(y+10, x + 34);
 
     return OK;
 }
